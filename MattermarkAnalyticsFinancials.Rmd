@@ -1,0 +1,351 @@
+---
+title: "Untitled"
+author: ""
+date: ""
+output: 
+  html_document:
+    fig_height: 3
+    fig_width: 5
+---
+<!-- Don't edit in between this line and the one below -->
+```{r include=FALSE}
+# Don't delete this chunk if you are using the DataComputing package
+library(DataComputing)
+```
+*Source file* 
+```{r, results='asis', echo=FALSE}
+includeSourceDocuments()
+```
+<!-- Don't edit the material above this line -->
+
+```{r}
+secdata <- read.csv(file.choose("num"))
+```
+```{r}
+
+Nasdaq <- read.csv("ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqlisted.txt", sep="|")
+Nasdaq <- Nasdaq %>%
+  select(Symbol, Security.Name)
+
+Other <- read.csv("ftp://ftp.nasdaqtrader.com/SymbolDirectory/otherlisted.txt", sep="|")
+Other <- Other %>%
+  mutate(Symbol = ACT.Symbol) %>%
+  select(Symbol, Security.Name)
+
+PublicCompanies <- rbind(Nasdaq, Other)
+```
+
+```{r}
+
+mattermark <- read.csv("C:/Users/darzo/Downloads/MattermarkAnalytics.csv")
+mattermark <- filter(mattermark, mattermark$Stage == "Exited (ipo)")
+mattermark <- filter(mattermark, mattermark$Test == TRUE)
+
+mattermark$Ticker <- as.character(mattermark$Ticker)
+
+intermediary <- c()
+aggregate <- list()
+netrevenue2016 <- c()
+operatingincome2016 <- c()
+netincome2016 <- c()
+
+for(i in 1:length(mattermark$Ticker)){
+  intermediary[i] <- getFinancials(mattermark$Ticker[i])
+  step <- get(intermediary[i])
+  sample2 <- viewFinancials(step, "IS", "A")
+  netrevenue2016[i] <- sample2[3,1]
+  operatingincome2016[i] <- sample2[13,1]
+  netincome2016[i] <- sample[25,1]
+}
+```
+
+```{r}
+
+companyFS <- 0
+
+company2016 <- function(x){
+  companyFS <- get(getFinancials(x))
+  companyIS <- viewFinancials(companyFS, "IS", "A")
+  return(c(companyIS[3,1], companyIS[13,1], companyIS[25,1]))
+}
+
+```
+```{r}
+
+list_of_financials <- list()
+
+for(i in 1:length(mattermark$Ticker)){
+  list_of_financials[i] <- list(company2016(mattermark$Ticker[i]))
+}
+
+# length(mattermark$Ticker)
+
+
+```
+```{r}
+
+observed1 <- viewFinancials(get(intermediary[1]), "IS", "A")
+observed2 <- viewFinancials(get(intermediary[2]), "IS", "A")
+observed3 <- viewFinancials(get(intermediary[3]), "IS", "A")
+observed4 <- viewFinancials(get(intermediary[4]), "IS", "A")
+observed5 <- viewFinancials(get(intermediary[5]), "IS", "A")
+observed6 <- viewFinancials(get(intermediary[6]), "IS", "A")
+observed7 <- viewFinancials(get(intermediary[7]), "IS", "A")
+observed8 <- viewFinancials(get(intermediary[8]), "IS", "A")
+observed9 <- viewFinancials(get(intermediary[9]), "IS", "A")
+observed10 <- viewFinancials(get(intermediary[10]), "IS", "A")
+observed11 <- viewFinancials(get(intermediary[11]), "IS", "A")
+observed12 <- viewFinancials(get(intermediary[12]), "IS", "A")
+observed13 <- viewFinancials(get(intermediary[13]), "IS", "A")
+observed14 <- viewFinancials(get(intermediary[14]), "IS", "A")
+observed15 <- viewFinancials(get(intermediary[15]), "IS", "A")
+observed16 <- viewFinancials(get(intermediary[16]), "IS", "A")
+observed17 <- viewFinancials(get(intermediary[17]), "IS", "A")
+observed18 <- viewFinancials(get(intermediary[18]), "IS", "A")
+observed19 <- viewFinancials(get(intermediary[19]), "IS", "A")
+observed20 <- viewFinancials(get(intermediary[20]), "IS", "A")
+observed21 <- viewFinancials(get(intermediary[21]), "IS", "A")
+observed22 <- viewFinancials(get(intermediary[22]), "IS", "A")
+observed23 <- viewFinancials(get(intermediary[23]), "IS", "A")
+observed24 <- viewFinancials(get(intermediary[24]), "IS", "A")
+observed25 <- viewFinancials(get(intermediary[25]), "IS", "A")
+observed26 <- viewFinancials(get(intermediary[26]), "IS", "A")
+observed27 <- viewFinancials(get(intermediary[27]), "IS", "A")
+observed28 <- viewFinancials(get(intermediary[28]), "IS", "A")
+observed29 <- viewFinancials(get(intermediary[29]), "IS", "A")
+observed30 <- viewFinancials(get(intermediary[30]), "IS", "A")
+observed31 <- viewFinancials(get(intermediary[31]), "IS", "A")
+observed32 <- viewFinancials(get(intermediary[32]), "IS", "A")
+observed33 <- viewFinancials(get(intermediary[33]), "IS", "A")
+observed34 <- viewFinancials(get(intermediary[34]), "IS", "A")
+observed35 <- viewFinancials(get(intermediary[35]), "IS", "A")
+observed36 <- viewFinancials(get(intermediary[36]), "IS", "A")
+observed37 <- viewFinancials(get(intermediary[37]), "IS", "A")
+observed38 <- viewFinancials(get(intermediary[38]), "IS", "A")
+observed39 <- viewFinancials(get(intermediary[39]), "IS", "A")
+observed40 <- viewFinancials(get(intermediary[40]), "IS", "A")
+observed41 <- viewFinancials(get(intermediary[41]), "IS", "A")
+observed42 <- viewFinancials(get(intermediary[42]), "IS", "A")
+observed43 <- viewFinancials(get(intermediary[43]), "IS", "A")
+observed44 <- viewFinancials(get(intermediary[44]), "IS", "A")
+observed45 <- viewFinancials(get(intermediary[45]), "IS", "A")
+observed46 <- viewFinancials(get(intermediary[46]), "IS", "A")
+observed47 <- viewFinancials(get(intermediary[47]), "IS", "A")
+observed48 <- viewFinancials(get(intermediary[48]), "IS", "A")
+observed49 <- viewFinancials(get(intermediary[49]), "IS", "A")
+observed50 <- viewFinancials(get(intermediary[50]), "IS", "A")
+observed51 <- viewFinancials(get(intermediary[51]), "IS", "A")
+observed52 <- viewFinancials(get(intermediary[52]), "IS", "A")
+observed53 <- viewFinancials(get(intermediary[53]), "IS", "A")
+observed54 <- viewFinancials(get(intermediary[54]), "IS", "A")
+observed55 <- viewFinancials(get(intermediary[55]), "IS", "A")
+observed56 <- viewFinancials(get(intermediary[56]), "IS", "A")
+observed57 <- viewFinancials(get(intermediary[57]), "IS", "A")
+
+
+netrevenue <- list(observed1[3,], 
+               observed2[3,], 
+               observed3[3,],
+               observed4[3,],
+               observed5[3,],
+               observed6[3,],
+               observed7[3,],
+               observed8[3,],
+               observed9[3,],
+               observed10[3,],
+               observed11[3,],
+               observed12[3,],
+               observed13[3,],
+               observed14[3,],
+               observed15[3,],
+               observed16[3,],
+               observed17[3,],
+               observed18[3,],
+               observed19[3,],
+               observed20[3,],
+               observed21[3,],
+               observed22[3,],
+               observed23[3,],
+               observed24[3,],
+               observed25[3,],
+               observed26[3,],
+               observed27[3,],
+               observed28[3,],
+               observed29[3,],
+               observed30[3,],
+               observed31[3,],
+               observed32[3,],
+               observed33[3,],
+               observed34[3,],
+               observed35[3,],
+               observed36[3,],
+               observed37[3,],
+               observed38[3,],
+               observed39[3,],
+               observed40[3,],
+               observed41[3,],
+               observed42[3,],
+               observed43[3,],
+               observed44[3,],
+               observed45[3,],
+               observed46[3,],
+               observed47[3,],
+               observed48[3,],
+               observed49[3,],
+               observed50[3,],
+               observed51[3,],
+               observed52[3,],
+               observed53[3,],
+               observed54[3,],
+               observed55[3,],
+               observed56[3,],
+               observed57[3,]
+               )
+
+operatingincome <- list(observed1[13,], 
+               observed2[13,], 
+               observed3[13,],
+               observed4[13,],
+               observed5[13,],
+               observed6[13,],
+               observed7[13,],
+               observed8[13,],
+               observed9[13,],
+               observed10[13,],
+               observed11[13,],
+               observed12[13,],
+               observed13[13,],
+               observed14[13,],
+               observed15[13,],
+               observed16[13,],
+               observed17[13,],
+               observed18[13,],
+               observed19[13,],
+               observed20[13,],
+               observed21[13,],
+               observed22[13,],
+               observed23[13,],
+               observed24[13,],
+               observed25[13,],
+               observed26[13,],
+               observed27[13,],
+               observed28[13,],
+               observed29[13,],
+               observed30[13,],
+               observed31[13,],
+               observed32[13,],
+               observed33[13,],
+               observed34[13,],
+               observed35[13,],
+               observed36[13,],
+               observed37[13,],
+               observed38[13,],
+               observed39[13,],
+               observed40[13,],
+               observed41[13,],
+               observed42[13,],
+               observed43[13,],
+               observed44[13,],
+               observed45[13,],
+               observed46[13,],
+               observed47[13,],
+               observed48[13,],
+               observed49[13,],
+               observed50[13,],
+               observed51[13,],
+               observed52[13,],
+               observed53[13,],
+               observed54[13,],
+               observed55[13,],
+               observed56[13,],
+               observed57[13,]
+               )
+
+netincome <- list(observed1[25,], 
+               observed2[25,], 
+               observed3[25,],
+               observed4[25,],
+               observed5[25,],
+               observed6[25,],
+               observed7[25,],
+               observed8[25,],
+               observed9[25,],
+               observed10[25,],
+               observed11[25,],
+               observed12[25,],
+               observed13[25,],
+               observed14[25,],
+               observed15[25,],
+               observed16[25,],
+               observed17[25,],
+               observed18[25,],
+               observed19[25,],
+               observed20[25,],
+               observed21[25,],
+               observed22[25,],
+               observed23[25,],
+               observed24[25,],
+               observed25[25,],
+               observed26[25,],
+               observed27[25,],
+               observed28[25,],
+               observed29[25,],
+               observed30[25,],
+               observed31[25,],
+               observed32[25,],
+               observed33[25,],
+               observed34[25,],
+               observed35[25,],
+               observed36[25,],
+               observed37[25,],
+               observed38[25,],
+               observed39[25,],
+               observed40[25,],
+               observed41[25,],
+               observed42[25,],
+               observed43[25,],
+               observed44[25,],
+               observed45[25,],
+               observed46[25,],
+               observed47[25,],
+               observed48[25,],
+               observed49[25,],
+               observed50[25,],
+               observed51[25,],
+               observed52[25,],
+               observed53[25,],
+               observed54[25,],
+               observed55[25,],
+               observed56[25,],
+               observed57[25,]
+               )
+
+require(openxlsx)
+#list_of_datasets <- list("Name of DataSheet1" = dataframe1, "Name of Datasheet2" = dataframe2)
+write.table(netrevenue, file = "C:/Users/darzo/OneDrive/Documents/mattermarkanalyticnetrevenue.csv")
+write.table(operatingincome, file = "C:/Users/darzo/OneDrive/Documents/mattermarkanalyticoperatingincome.csv")
+write.table(netincome, file = "C:/Users/darzo/OneDrive/Documents/mattermarkanalyticnetincome.csv")
+
+
+```
+
+```{r}
+
+#using tq_get, better for pulling stock data but need to unnest to view
+
+mattermarkcompanies <- mattermark$Ticker %>%
+  tq_get(get = "financials") %>%
+  filter(type == "IS")
+
+
+
+
+```
+
+```{r}
+
+getFinancials('NLSN')
+observed <- viewFinancials(NLSN.f, "IS", "A")
+data.frame(observed)
+write.table(observed, file = "C:/Users/darzo/OneDrive/Documents/mlabtest1.csv")
+```
