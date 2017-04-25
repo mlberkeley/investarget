@@ -1,0 +1,96 @@
+---
+title: "Mattermark Company Financials - Master Copy"
+author: "ML@B"
+date: "4/25/2017"
+output: 
+  html_document:
+    fig_height: 3
+    fig_width: 5
+---
+<!-- Don't edit in between this line and the one below -->
+```{r include=FALSE}
+# Don't delete this chunk if you are using the DataComputing package
+library(DataComputing)
+```
+*Source file* 
+```{r, results='asis', echo=FALSE}
+includeSourceDocuments()
+```
+<!-- Don't edit the material above this line -->
+
+```{r}
+
+#all available US stocks
+
+Nasdaq <- read.csv("ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqlisted.txt", sep="|")
+Nasdaq <- Nasdaq %>%
+  select(Symbol, Security.Name)
+
+Other <- read.csv("ftp://ftp.nasdaqtrader.com/SymbolDirectory/otherlisted.txt", sep="|")
+Other <- Other %>%
+  mutate(Symbol = ACT.Symbol) %>%
+  select(Symbol, Security.Name)
+
+PublicCompanies <- rbind(Nasdaq, Other)
+```
+
+```{r}
+#mattermark data and functions to pull data
+
+#IMPORTANT: file muust have a row called "Ticker" with the US public company's ticker
+mattermark_companies <- read.csv("C:/Users/darzo/Downloads/MattermarkAnalytics.csv")
+#replace download file
+
+#filter for companies that have IPO'ed and have a US ticker
+mattermark_companies <- filter(mattermark_companies, mattermark_companies$Stage == "Exited (ipo)")
+mattermark_companies <- filter(mattermark_companies, mattermark_companies$Ticker != "")
+
+#convert ticker object into character
+mattermark_companies$Ticker <- as.character(mattermark_companies$Ticker)
+
+#functions to find particular financial information
+company2016Rev <- function(x){
+  #Net Revenue
+  companyIS <- viewFinancials(companyFS, "IS", "A")
+  return(companyIS[3,1])
+}
+
+company2016OI <- function(x){
+  #Operating Income
+  companyIS <- viewFinancials(companyFS, "IS", "A")
+  return(companyIS[13,1])
+}
+
+company2016NI <- function(x){
+  #Net Income
+  companyIS <- viewFinancials(companyFS, "IS", "A")
+  return(companyIS[25,1])
+}
+
+
+```
+
+```{r}
+#establish global financial statement placeholder
+companyFS <- 0
+
+#generate list of financial information
+list_of_revenue <- c()
+list_of_operatingincome <- c()
+list_of_netincome <- c()
+
+#iterate through list of tickers to get financial information
+for(i in 1:length(mattermark_companies$Ticker)){
+  companyFS <- get(getFinancials(mattermark_companies$Ticker[i]))
+  list_of_revenue[i] <- company2016Rev(mattermark_companies$Ticker[i])
+  list_of_operatingincome[i] <- company2016OI(mattermark_companies$Ticker[i])
+  list_of_netincome[i] <- company2016NI(mattermark_companies$Ticker[i])
+}
+
+#convert group of lists into dataframe for export
+publiccompanyfinancials <- data.frame(mattermark_companies$Website, list_of_revenue, list_of_operatingincome, list_of_netincome)
+
+#rename file
+write.csv(publiccompanyfinancials, file = "C:/Users/darzo/OneDrive/Documents/MattermarkCompanyFinancials.csv", row.names = FALSE)
+
+```
