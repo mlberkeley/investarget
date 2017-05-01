@@ -1,44 +1,18 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-import requests
-import urllib
-import httplib
-import pprint
+from py_ms_cognitive import PyMsCognitiveNewsSearch
+import pandas as pd 
+import numpy as np
 import csv
-import json
-import pandas as pd
 
+with open('/Users/kunalsingh/Documents/ML@Berkeley/Investarget/bing_data.csv', 'a') as data:
+	writer = csv.writer(data)
+	df = pd.read_csv('/Users/kunalsingh/Documents/ML@Berkeley/Investarget/CrunchbaseMattermarkMerge.csv',  usecols=[1])
+	names = df['Name'].values.tolist()
 
-def bing_search(query):
-    url = 'https://api.cognitive.microsoft.com/bing/v5.0/search'
-    # query string parameters
-    payload = {'q': query}
-    # custom headers
-    headers = {'Ocp-Apim-Subscription-Key': '418c759db6fb4604b1e494c7e0511651'}
-    # make GET request
-    r = requests.get(url, params=payload, headers=headers)
-    # get JSON response
-    return r.json()
+	for name in names:
+		search_service = PyMsCognitiveNewsSearch('7831cba4b4104e7b9d45ab6666ad3514', name)
+		first_fifty_result = search_service.search(limit=10, format='json')
 
-j = bing_search('Qualtrics')
-
-#pp = pprint.PrettyPrinter(indent=4)
-#pp.pprint(j.get('webPages', {}).get('value', {}))
-
-data = j.get('webPages', {}).get('value', {})
-
-with open('/Users/kunalsingh/Documents/ML@Berkeley/Investarget/bing_json.json', 'w') as outfile:
-    json.dump(data, outfile, ensure_ascii=True, encoding="utf-8")
-
-
-df = pd.read_json('/Users/kunalsingh/Documents/ML@Berkeley/Investarget/bing_json.json')
-print(df)       
-df.to_csv('/Users/kunalsingh/Documents/ML@Berkeley/Investarget/bing_data.csv')
-
-
-
-
-
-
-
+		descriptions = []
+		for item in first_fifty_result:
+			descriptions.append(item.description)
+    	writer.writerow(descriptions)
